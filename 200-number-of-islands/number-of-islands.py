@@ -1,30 +1,29 @@
 class Solution:
     def numIslands(self, grid: List[List[str]]) -> int:
-        if not grid:
-            return 0
-        visited, islands = set(), 0
+        directions = [[1, 0], [-1, 0], [0, 1], [0, -1]]
+        ROWS, COLS = len(grid), len(grid[0])
+        islands = 0
 
-        def BFS(i, j):
-            queue = collections.deque()
-            visited.add((i, j))
-            queue.append((i, j))
-            while queue:
-                row, column = queue.pop()
-                directions = [[-1, 0],[1, 0],[0, -1],[0, 1]]
-                for directionRow, directionColumn in directions:
-                    r, c = row + directionRow, column + directionColumn
-                    if (r in range(len(grid)) and
-                        c in range(len(grid[0])) and
-                        (r, c) not in visited and
-                        grid[r][c] == "1"):
-                        queue.append((r, c))
-                        visited.add((r, c))
+        def bfs(r, c):
+            q = deque()
+            grid[r][c] = "0"
+            q.append((r, c))
 
-        for i in range(len(grid)):
-            for j in range(len(grid[0])):
-                currNum = grid[i][j]
-                if currNum == "1" and (i, j) not in visited:
-                    BFS(i, j)
+            while q:
+                row, col = q.popleft()
+                for dr, dc in directions:
+                    nr, nc = dr + row, dc + col
+                    if (nr < 0 or nc < 0 or nr >= ROWS or
+                        nc >= COLS or grid[nr][nc] == "0"
+                    ):
+                        continue
+                    q.append((nr, nc))
+                    grid[nr][nc] = "0"
+
+        for r in range(ROWS):
+            for c in range(COLS):
+                if grid[r][c] == "1":
+                    bfs(r, c)
                     islands += 1
+
         return islands
-        
