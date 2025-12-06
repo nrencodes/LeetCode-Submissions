@@ -9,7 +9,7 @@ class Solution:
             visited.add((i, j))
             queue.append((i, j))
             while queue:
-                row, column = queue.popleft()
+                row, column = queue.pop()
                 directions = [[-1, 0],[1, 0],[0, -1],[0, 1]]
                 for directionRow, directionColumn in directions:
                     r, c = row + directionRow, column + directionColumn
