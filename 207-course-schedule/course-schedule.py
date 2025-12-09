@@ -8,8 +8,6 @@ class Solution:
         def dfs(course):
             if course in visit:
                 return False
-            if prereqMap[course] == []:
-                return True
 
             visit.add(course)
             for prereq in prereqMap[course]:
