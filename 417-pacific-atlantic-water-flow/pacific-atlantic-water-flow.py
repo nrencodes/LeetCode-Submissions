@@ -1,39 +1,30 @@
 class Solution:
     def pacificAtlantic(self, heights: List[List[int]]) -> List[List[int]]:
-        p_q, a_q = deque(), deque()
-        p_visit, a_visit = set(), set()
-        m, n = len(heights), len(heights[0])
+        height, width = len(heights), len(heights[0])
+        pacific, atlantic = set(), set()
 
-        # top row   
-        for col in range(n):
-            p_q.append((0, col))
-            p_visit.add((0, col))
+        def dfs(i, j, visit, num):
+            if ((i, j) in visit or
+            i < 0 or i >= height or
+            j < 0 or j >= width or
+            heights[i][j] < num):
+                return
 
-        # left column
-        for row in range(1, m):
-            p_q.append((row, 0))
-            p_visit.add((row, 0))
+            visit.add((i, j))
+            for nr, nc in [(-1,0),(1,0),(0,1),(0,-1)]:
+                dfs(i + nr, j + nc, visit, heights[i][j])
 
-        # bottom row
-        for col in range(n):
-            a_q.append((m - 1, col))
-            a_visit.add((m - 1, col))
 
-        # right column
-        for row in range(m - 1):
-            a_q.append((row, n - 1))
-            a_visit.add((row, n - 1))
+        for i in range(height):
+            dfs(i, 0, pacific, heights[i][0])
+            dfs(i, width - 1, atlantic, heights[i][width-1])
 
-        def bfs(queue, visited):
-            while queue:
-                r, c = queue.popleft()
-                for i, j in [(0, 1), (0, -1), (1, 0), (-1, 0)]:
-                    nr, nc = r+i, c+j
-                    if 0 <= nr < m and 0 <= nc < n and heights[nr][nc] >= heights[r][c] and (nr, nc) not in visited:
-                        queue.append((nr, nc))
-                        visited.add((nr, nc))
-            return visited
+        for i in range(width):
+            dfs(0, i, pacific, heights[0][i])
+            dfs(height-1, i, atlantic, heights[height-1][i])
 
-        pacific = bfs(p_q, p_visit)
-        atlantic = bfs(a_q, a_visit)
-        return list(pacific.intersection(atlantic))
+        return list(pacific & atlantic)
+            
+
+
+        
