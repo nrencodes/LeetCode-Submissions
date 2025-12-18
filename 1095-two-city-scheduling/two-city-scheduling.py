@@ -5,8 +5,7 @@ class Solution:
         for costA, costB in costs:
             differences.append((costA - costB, costA, costB))
         res = 0
-        differences = sorted(differences, key=lambda x: x[0])
-        print(differences)
+        differences.sort()
         for i in range(len(costs)):
             if i < n: 
                 res += differences[i][1]
