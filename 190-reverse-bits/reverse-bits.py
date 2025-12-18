@@ -4,7 +4,8 @@ class Solution:
 
         for i in range(32):
             # Find the bit in the ones place 
-            bit = (n >> i) & 1
+            bit = n & 1
+            n >>= 1
 
             # shift result 1 to the left and then or with current bit
             res = (res << 1) | bit
