@@ -1,16 +1,15 @@
 class Solution:
     def isHappy(self, n: int) -> bool:
-        sums = set()
-
-        while n != 1:
+        def next_num(x) -> int:
             currSum = 0
-            for integer in str(n):
+            for integer in str(x):
                 currSum += pow(int(integer), 2)
+            return currSum
 
-            if currSum in sums:
-                return False
+        first, second = n, next_num(n)
 
-            n = currSum
-            sums.add(currSum)
+        while first != 1 and first != second: 
+            first = next_num(first)
+            second = next_num(next_num(second))
 
-        return True
+        return first == 1
