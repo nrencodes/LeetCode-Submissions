@@ -8,8 +8,8 @@ class Solution:
 
         first, second = n, next_num(n)
 
-        while first != 1 and first != second: 
+        while second != 1 and first != second: 
             first = next_num(first)
             second = next_num(next_num(second))
 
-        return first == 1
+        return second == 1
