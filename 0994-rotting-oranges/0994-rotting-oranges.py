@@ -1,0 +1,29 @@
+class Solution:
+    def orangesRotting(self, grid: List[List[int]]) -> int:
+        q = deque()
+        time, fresh = 0, 0 
+
+        rows, cols = len(grid), len(grid[0])
+        for r in range(rows):
+            for c in range(cols):
+                if grid[r][c] == 1:
+                    fresh += 1
+                elif grid[r][c] == 2:
+                    q.append((r, c))
+        
+        dirs = [[0,1], [0, -1], [1, 0], [-1,0]]
+        while q and fresh > 0:
+            # this for loop represents every rotten orange per minute
+            # every iteration is considered a minute because of dfs
+            for i in range(len(q)):
+                r,c = q.popleft()
+                for dr, dc in dirs:
+                    nr, nc = r+dr, c+dc
+                    if (nr < 0 or nr == rows or nc < 0 or nc == cols or grid[nr][nc] != 1):
+                        continue
+                    grid[nr][nc] = 2
+                    q.append((nr, nc))
+                    fresh -= 1
+            time += 1
+        
+        return time if fresh == 0 else -1
